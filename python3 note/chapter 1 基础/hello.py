@@ -61,7 +61,19 @@ list1[2]=['aa',123]
 
 print(list1); print(list1[2])
 
-#tuple 类似与list 一旦初始化 就不能再修改了
+#tuple 类似与list 一旦初始化 就不能再修改了 tuple只有1个元素时，为防止歧义需加,
+
+tuple1=('jack','lili','lucy') 
+
+tuple2=(1); tuple3=(1,)
+
+print(tuple1,tuple2,tuple3)
+
+#tuple 元素指向的元素是可以改变的
+
+tuple4=('jack','lili','lucy',[123,'abc']); print(tuple4)
+
+tuple4[3][1]='changed'; print(tuple4)
 
 #退出
 

@@ -75,8 +75,129 @@ tuple4=('jack','lili','lucy',[123,'abc']); print(tuple4)
 
 tuple4[3][1]='changed'; print(tuple4)
 
+#练习
+
+L = [
+    ['Apple', 'Google', 'Microsoft'],
+    ['Java', 'Python', 'Ruby', 'PHP'],
+    ['Adam', 'Bart', 'Lisa']
+]
+
+print(L[0][0],L[1][1],L[2][2])
+
+#if语句 if x: 只要x是非零数值,非空字符串,非空list就为True,否则False
+
+birth=int(input('birth:'))
+
+if birth>2000:
+
+    print('00后')
+
+#练习：
+
+'''
+小明身高1.75，体重80.5kg。请根据BMI公式（体重除以身高的平方）帮小明计算他的BMI指数，并根据BMI指数：
+
+低于18.5：过轻
+18.5-25：正常
+25-28：过重
+28-32：肥胖
+高于32：严重肥胖
+用if-elif判断并打印结果：
+'''
+
+s=80.5/(1.75*1.75)
+
+print(s);
+
+if s>32:
+
+    print('严重肥胖')
+
+elif s>=28:
+
+    print('肥胖')
+
+elif s>=25:
+
+    print('过重')
+
+elif s>=18.5:
+
+    print('正常')
+
+else:
+
+    print('肥胖')
+
+#循环 ,for while break continue 常规用法
+
+names = ['Michael', 'Bob', 'Tracy']
+
+for name in names:
+    
+    print(name)
+
+#range()函数，可以生成一个整数序列 
+
+s=0
+
+for x in range(101):
+
+    s=s+x
+
+print(s)
+
+n=100
+
+while n>0:
+
+    s=s-n;n=n-1
+
+print(s)
+
+#dict python的字典类型 key in dict判断是否存在 dict.get('key',value)key不在时赋值
+
+d={'a':123,'b':'aaa',3:'aa'}
+
+print(d[3]); print('b' in d); print(d.get('a'))
+
+print(d.get('a',456)); print(d.get('c')); print(d.get('c',456))
+
+#set 类似dict,但是不存value且key不重复
+
+s=set([1,1,2,2,3,4]); print(s)
+
+s.add(7); print(s)
+
+s.remove(2); print(s)
+
+s2=set([4,8,9]); print(s&s2); print(s|s2);
+
+# 再议不可变对象
+
+key=(1,2,3); key1=(1,[2,3])
+
+d[key]=1111; 
+
+d['dd']=key; 
+
+#d[key1]=1111;  不可以做key哦！TypeError: unhashable type: 'list'
+
+#可以做value
+
+d['dd']=key1; 
+
+print(d)
+
+s.add(key)
+
+#s.add(key1) 不可以做key哦！TypeError: unhashable type: 'list'
+
+print(s)
+
+#综上所述 tuple虽然不可变对象,含有引用元素list后不能再作为key了
+
 #退出
-
-
 
 exit()

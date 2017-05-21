@@ -166,54 +166,91 @@ extra={'sex':'girl','job':'Engineer'}
 
 person('b',14,**extra)
 
+#检查关键字函数是否存在某些参数
 
+def person1(name,age,**others):
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    if 'sex' in others:
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+        print('six')
 
+    print('name:',name,'age:',age,'others:',others)
+    
+person1('a',13,sex='girl',job='Engineer')
+
+
+#命名关键字参数:如果要限制关键字参数的名字，就可以用命名关键字参数,参数必须全部输入
+
+def person2(name,age,*,sex,job):
+
+    print('name:',name,'age:',age,sex,job)
+
+person2('a',13,sex='girl',job='Engineer222')
+
+#含有可变参数时,后面跟着的命名关键字参数不需要*
+
+def person3(name,age,*agrs,sex,job):
+
+    print('name:',name,'age:',age,sex,job,agrs)
+
+person3('a',13,sex='girl',job='Engineer333',*list)
+
+#命名关键字参数调用时必须有参数名,除非函数生命时参数设了缺省值
+
+#参数定义的顺序必须是：必选参数、默认参数、可变参数、命名关键字参数和关键字参数。
+
+def f1(a,b,c=1,*ags,e,**kw):
+
+    print(a,b,c,ags,e,kw)
+
+answer1=(1,2,3,4,5)
+
+answer2={'e':'aaa','m':111,'n':212}
+
+f1(*answer1,**answer2)
+
+#so~对于任意函数，都可以通过类似func(*args, **kw)的形式调用它，无论它的参数是如何定义的
+
+#递归函数
+
+def fact(n):
+
+    if n==1:
+    
+        return 1
+        
+    return n*fact(n-1)
+    
+print(fact(5))
+
+#防止栈溢出:尾递归是指，在函数返回的时候，调用自身本身，并且，return语句不能包含表达式
+
+def fact1(n):
+
+    return fact2(n,1)
+    
+def fact2(n,m):
+
+    if n==1:
+    
+        return m
+        
+    return fact2(n-1,n*m)
+
+print(fact1(3))
+
+#练习汉诺塔 
+
+def han(m):
+    
+    if m==1:
+    
+        return 1
+    
+    return 2*han(m-1)+1
+    
+print(han(64))
+    
 #退出
 
 exit()

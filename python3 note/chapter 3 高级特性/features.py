@@ -73,19 +73,34 @@ for a,b,c in [(1,2,3),(3,4,5),(7,8,9)]:
 
     print(a,b,c)
 
+#列表生成式List Comprehensions,用于创建list
+
+print(list(range(1,10)))
 	
+print([x*x for x in range(1,11)])
 	
+print([x*x for x in range(1,11) if x%3==0])	
 	
+print([a+b+c for a in 'ABC' for b in 'def' for c in 'OPQ'])		
 	
+#导入文件系统os列出文件夹下文件
+
+import os
+
+print([d for d in os.listdir('.')])
 	
+#列表生成式也可以使用两个变量来生成list：
+
+d={'x':'a','y':'b'}
 	
+print([k+'='+v for k,v in d.items()])	
+
+#练习list中既包含字符串，又包含整数，转换为小写
+
+test1=[12,'Hello',{1,2,3}]
 	
-	
-	
-	
-	
-	
-	
+print([s.lower() for s in test1 if isinstance(s,str)])	
+
 	
 	
 	

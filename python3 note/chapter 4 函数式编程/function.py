@@ -25,3 +25,15 @@ def add(a,b,f):
     return f(a)+f(b)
     
 print(add(2,-2,abs))
+
+#map()和reduce()函数,map接受一个函数和一个Iterable,返回一个Iterator
+
+def f1(x):
+
+    return x*x
+   
+#Iterrator是惰性数列,所以通过list()把整个数列计算出来返回一个list
+   
+print(list(map(f1,range(1,6)))) 
+
+print(list(map(str,'hello world !')))

@@ -1,4 +1,4 @@
-#Higher-order function 高阶函数
+﻿#Higher-order function 高阶函数
 
 #变量可以指向函数
 
@@ -108,17 +108,81 @@ def str2float(s):
 
 print(str2float('123.456'))
 
-#filter
+#filter函数用于过滤数列,返回函数值为true的值
 
+print(list(filter(lambda x : x%2 ==1,range(1,11))))
 
+#埃氏筛法取素数
 
+def _odd_iter():
 
+    n=1
+    
+    while True:
+    
+        n=n+2
+    
+        yield n
+        
+def _not_divisible(n):
 
+    return lambda x: x%n >0
+    
+def prims():
 
+    yield 2
+    
+    l=_odd_iter()
+    
+    while True:
+    
+        n=next(l)
+        
+        yield n
+        
+        l=filter(_not_divisible(n),l)
+        
+for n in prims():
 
+    if n<100:
+    
+        print(n)
+    
+    else:
+    
+        break
+        
+#练习:回数是指从左向右读和从右向左读都是一样的数，例如12321。请利用filter()滤掉非回数：
 
+print(list(filter(lambda x : str(x)[::-1]==str(x),range(1,1000))))
 
+print(str(12345)[::-1])
 
+#sorted()对数组排序
+
+l3=[36, 5, -12, 9, -21]
+
+print(sorted(l3))   
+
+#sorted是一个高阶函数可以接受一个key参数(函数),第三个参数reverse=True反响拍序   
+
+print(sorted(l3,key=abs))   
+
+l4=['bob', 'about', 'Zoo', 'Credit'];
+
+print(sorted(l4))   
+
+print(sorted(l4,key=str.lower))   
+
+print(sorted(l3,key=abs,reverse=True))   
+
+#练习按名字排序
+
+Lt = [('Bob', 75), ('Adam', 92), ('Bart', 66), ('Lisa', 88)]
+
+print(sorted(Lt))   
+
+print(sorted(Lt,key= lambda x :x[1]))  
 
 
 

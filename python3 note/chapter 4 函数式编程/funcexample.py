@@ -79,31 +79,106 @@ def log(func):
 
 @log
 def now1():
-    print('17:27')
-	
+    print('17:37')
+    
 now1()
 
+#如果装饰器本身有参数的话
 
+def log2(text):
+    def decorator(func):
+        def wrapper(*args,**kw):
+            print("%s %s():" % (text,func.__name__))
+            return func(*args,**kw)
+        return wrapper
+    return decorator
+    
+@log2('execute')
+def now2():
+    print('17:47')
+now2();
+print(now2.__name__)
 
+#此时now2的name被替换成了wrapper,引入functools即可
 
+import functools
+def log3(text):
+    def decorator(func):
+        @functools.wraps(func)
+        def wrapper(*args,**kw):
+            print("%s %s():" % (text,func.__name__))
+            return func(*args,**kw)
+        return wrapper
+    return decorator
+    
+@log3('execute')
+def now3():
+    print('17:47')
+now3();
+print(now3.__name__)
 
+#练习请编写一个decorator，能在函数调用的前后打印出'begin call'和'end call'的日志。
 
+def log4(func):
+    @functools.wraps(func)
+    def wrapper(*args,**kw):
+        print("begin call")
+        func(*args,**kw)
+        print("end call")
+    return wrapper
 
+@log4
+def now4():
+    print('17:57')
+now4();
+print(now4.__name__)
 
+#练习请编写一个decorator，能在函数调用支持log传不传参。
 
+def log5(text):
+    if(isinstance(text,str)):
+        def decorator(func):
+            @functools.wraps(func)
+            def wrapper(*args,**kw):
+                print("%s %s():" % (text,func.__name__))
+                return func(*args,**kw)
+            return wrapper
+        return decorator
+    else:
+        @functools.wraps(text)
+        def wrapper(*args,**kw):
+            print("begin call")
+            text(*args,**kw)
+            print("end call")
+        return wrapper
 
+@log5
+def now5():
+    print('16:57')
+now5();
+print(now5.__name__)
 
+#functools.partial可以用来创建一个偏函数
+#x是2进制的 int之后统一变为10进制的整数
+def int2(x,type=2):
+    return int(x,type)
+    
+print(int2('111111111'))
+print(int2('199',16))
 
+int3=functools.partial(int,base=2)
 
+print(int3('111111111'))
+print(int3('199',base=16))
 
+#相当于kw={'base':2} int3(x,**kw)
 
+max2=functools.partial(max,10)
 
+#相当与把10作为*args放到最左边
 
-
-
-
-
-
+print(max2(1,23))
+print(max2(1,2,3))
 
 
 

@@ -160,12 +160,23 @@ class Fibseries():
         return self.a
     
     #此时类虽然可以for循环,但是不能当list使用,需要__getitem__()方法  
-	#__getitem__()方法传入参数可能有多种
+    #__getitem__()方法传入参数可能有多种,int或者切片
     def __getitem__(self,n):
         a,b=1,1
-        for x in range(n):
-            a,b=b,a+b
-        return a
+        if isinstance(n,int):
+            for x in range(n):
+                a,b=b,a+b
+            return a
+        if isinstance(n,slice):#切片类型
+            start=n.start
+            stop=n.stop
+            l=[]
+            for x in range(stop):
+                if x>=start:
+                    a,b=b,a+b
+                    l.append(a)
+            return l
+                
     
         
 for n in Fibseries():
@@ -174,15 +185,43 @@ for n in Fibseries():
 print(Fibseries()[3])
 print(Fibseries()[13])
 
+print(Fibseries()[1:10])
 
+#与__getitem__对应的还有__setitem__和__delitem__把对象看成dict,赋值/删除
 
+#__getattr__可以动态返回一个属性
 
+class Getitemtest():
+    def __init__(self):
+        self.name='zhangsan'
+    def __getattr__(self,attr):
+        if attr=='age':#添加属性
+            return 89
+        if attr=='weight':#添加方法
+            return lambda :25
+        #raise AttributeError('\'getitemtest\' don\'t has attr %s' % attr)
+        #修改默认返回的None
+g=Getitemtest()
+print(g.name)
+print(g.age)
+print(g.sex)#None,不会返回'has no attribute'因为__getattr__默认返回None
+print(g.weight())
+print(g.sex)
 
+#应用链式调用
 
+class Chain():
+    def __init__(self,path=""):
+        self.__path=path
+    def __getattr__(self,path):
+        return Chain('%s %s' % (self.__path,path))
+    def __str__(self):
+        return self.__path
+    __repr__=__str__
+    
+print(Chain().staus.user)
 
-
-
-
+#print(Chain().user('zhangsan').userinfo)
 
 
 

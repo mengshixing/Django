@@ -343,13 +343,14 @@ class Field(object):
         self.name=name
         self.column_type=column_type
     def __str__(self):
-        return '<%s:%s>' % (self.__class__.__name__,self.name
+        return '<%s:%s>' % (self.__class__.__name__,self.name)
         
 #进一步定义各种类型的Field
 
 class StringField(Field):
     def __init__(self, name):
         super(StringField, self).__init__(name, 'varchar(100)')
+		#等价于super().__init__(name, 'varchar(100)')
 class IntegerField(Field):
     def __init__(self,name):
         super(IntegerField,self).__init__(name,'bigint')
@@ -357,18 +358,18 @@ class IntegerField(Field):
 
 class ModelMetaclass(type):
     def __new__(cls,name,bases,attrs):
-        if name=='Model':
+        if name=='Model': #过滤掉model类的修改
             return type.__new__(cls,name,bases,attrs)
-        print('Found Model %s' % name)
-        mappings=dict()
-        for k,v in attrs.items():
+        print('Found Model %s' % name) #打印类的名字
+        mappings=dict() #定义一个字典
+        for k,v in attrs.items():#查找Field属性放入字典
             if isinstance(v,Field):
                 print('Found mapping: %s => %s' % (k, v))
                 mappings[k]=v
-        for k in mappings.keys():
+        for k in mappings.keys():#从类属性中删除Field属性
             attrs.pop(k)    
         attrs['__mappings__']=mappings
-        attrs['__table__']=name
+        attrs['__table__']=name #表名简化为类名
         return type.__new__(cls,name,bases,attrs)
         
 #基类model
@@ -390,7 +391,7 @@ class Model(dict,metaclass=ModelMetaclass):
         for k,v in self.__mappings__.items():
             fields.append(v.name)
             params.append('?')
-            args.append(getattr(self,key,None))
+            args.append(getattr(self,k,None))
         sql = 'insert into %s (%s) values (%s)' % (self.__table__, ','.join(fields), ','.join(params))
         print('SQL: %s' % sql)
         print('ARGS: %s' % str(args))
@@ -400,7 +401,7 @@ class User(Model):
     name=StringField('username')
     pw=StringField('password')
 
-u = User(id=12345, name='Michael', email='test@orm.org', password='my-pwd')
+u = User(id=12345, name='Michael',password='my-pwd')
 u.save()
 
 

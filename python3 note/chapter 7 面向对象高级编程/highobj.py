@@ -210,18 +210,203 @@ print(g.sex)
 
 #应用链式调用
 
-class Chain():
-    def __init__(self,path=""):
+class Chain(object):
+    def __init__(self,path=''):
         self.__path=path
-    def __getattr__(self,path):
-        return Chain('%s %s' % (self.__path,path))
+    def __getattr__(self,path):#返回类本身,递归
+        return Chain('%s/%s' % (self.__path,path))
     def __str__(self):
         return self.__path
     __repr__=__str__
     
-print(Chain().staus.user)
+print(Chain().staus)
+print(Chain().staus.list)
 
-#print(Chain().user('zhangsan').userinfo)
+#__call__方法对实例可以直接调用
+
+class Callts():
+    def __init__(self,name):
+        self.__name=name
+    def __call__(self):
+        print('my name is %s' % self.__name)
+
+cts=Callts('Lisa')
+cts()
+
+#__call__还可以定义参数,实例调用可以看成函数,实例函数无本质区别
+#使用Callable可以判断一个对象能否被调用
+
+print(callable(Callts('zhangsan')))#true
+
+print(callable(Getitemtest()))#false
+
+print(callable(abs))#true
+
+#定制类#print(Chain().user('zhangsan').userinfo)变成GET /users/:user/userinfo API
+
+class Getapi(object):
+    def __init__(self,path='get'):
+        self.__path=path
+    def __getattr__(self,path):
+        return Getapi('%s/%s' % (self.__path,path))
+    def __call__(self,path):
+        return Getapi('%s:%s' % (self.__path,path))
+    def __str__(self):
+        return self.__path  
+    __repr__=__str__
+
+print(Getapi().user('zhangsan').group('33').userinfo)
+
+#执行原理是getattr递归(有参数的话执行call递归)281 
+
+#使用枚举类
+
+from enum import Enum
+#自动赋值1到7
+
+Week=Enum('Week',('Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'))
+for name,member in Week.__members__.items():
+    print(name,'=>',member,',',member.value)
+
+from enum import Enum,unique
+#@unique用来检查重复
+@unique
+class sex(Enum):
+    male=0
+    female=1
+    other=2
+
+for name,member in sex.__members__.items():
+    print(name,'=>',member,',',member.value)
+
+print(sex.female)
+print(sex(1))
+print(sex.female.value)
+
+#使用元类 type()函数可以查看一个类型或者变量的类型
+from hello import Hello
+h=Hello()
+h.hello()
+print(type(Hello))#<class 'type'>
+print(type(h))#<class 'hello.Hello'>
+
+#Hello是一个class类型就是type,是另一个实例类型是class Hello
+#type函数可以创建新的类型
+def fn(self,name='world'):
+    print('hello, %s' % name)
+Hello1=type('Hello1',(object,),dict(__init__=fn))#创建Hello1 class
+
+h1=Hello1('list')
+
+print(type(Hello))#<class 'type'>
+print(type(h))#<class 'hello.Hello'>
+
+#type函数第一个参数class的名称
+#第二个参数继承的父类集合
+#第三个方法名称与函数绑定
+
+#python解释器遇到class类定义时,也是调用type()函数创建出class
+
+#metaclass 元类,控制类的创建行为,类可以看成是元类创建的实例
+#必须从type派生
+class ListMetaclass(type):
+    def __new__(cls,name,bases,attrs):
+        attrs['add']=lambda self,value:self.append(value)
+        return type.__new__(cls,name,bases,attrs)
+
+#传入关键字参数metaclass,指示定制类     
+class Mylist(list,metaclass=ListMetaclass):
+    pass
+
+#__new__方法的参数分别为
+#第一个    当前准备创建的类的对象
+#第二个 类的名字
+#第三个 类继承集合,第四个类的方法集合
+
+l=Mylist()
+l.add(1)
+print(l)
+
+#object relational mapping (ORM)对象——关系映射,
+#数据库中一个表对应一个类,一行对应一个对象
+#父类Model和属性类型StringField、IntegerField是由ORM框架提供的
+# class User(Model):
+    # id=IntegerField('id')
+    # name=StringField('username')
+    # pw=StringField('password')
+
+# u=User(id=12,name='lixiang',pw='1')#实例
+# u.save()#保存
+
+class Field(object):
+    def __init__(self,name,column_type):
+        self.name=name
+        self.column_type=column_type
+    def __str__(self):
+        return '<%s:%s>' % (self.__class__.__name__,self.name
+        
+#进一步定义各种类型的Field
+
+class StringField(Field):
+    def __init__(self, name):
+        super(StringField, self).__init__(name, 'varchar(100)')
+class IntegerField(Field):
+    def __init__(self,name):
+        super(IntegerField,self).__init__(name,'bigint')
+#接下来编写ModelMetaclass
+
+class ModelMetaclass(type):
+    def __new__(cls,name,bases,attrs):
+        if name=='Model':
+            return type.__new__(cls,name,bases,attrs)
+        print('Found Model %s' % name)
+        mappings=dict()
+        for k,v in attrs.items():
+            if isinstance(v,Field):
+                print('Found mapping: %s => %s' % (k, v))
+                mappings[k]=v
+        for k in mappings.keys():
+            attrs.pop(k)    
+        attrs['__mappings__']=mappings
+        attrs['__table__']=name
+        return type.__new__(cls,name,bases,attrs)
+        
+#基类model
+class Model(dict,metaclass=ModelMetaclass):
+    def __init__(self,**kv):
+        super(Model,self).__init__(**kv)
+    def __getattr__(self,key):
+        try:
+            return self[key]
+        except KeyError:
+            raise AttributeError(r"'Model' object has no attribute '%s'" % key)
+    def __setattr__(self,key,value):
+        self[key]=value
+    
+    def save(self):
+        fields=[]
+        params=[]
+        args=[]
+        for k,v in self.__mappings__.items():
+            fields.append(v.name)
+            params.append('?')
+            args.append(getattr(self,key,None))
+        sql = 'insert into %s (%s) values (%s)' % (self.__table__, ','.join(fields), ','.join(params))
+        print('SQL: %s' % sql)
+        print('ARGS: %s' % str(args))
+
+class User(Model):
+    id=IntegerField('id')
+    name=StringField('username')
+    pw=StringField('password')
+
+u = User(id=12345, name='Michael', email='test@orm.org', password='my-pwd')
+u.save()
+
+
+
+
+
 
 
 

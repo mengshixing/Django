@@ -127,13 +127,27 @@ print([x for x in os.listdir(r'E:\123\Django\python3 note')])
 #注意的是join r'路径'最后不要加\
 print([x for x in os.listdir(r'E:\123\Django\python3 note') if os.path.isdir(os.path.join(r'E:\123\Django\python3 note',x))])
 
+#列出'chapter 8 错误，调试和测试'目录下的py文件
 
+print([x for x in os.listdir(r'E:\123\Django\python3 note\chapter 8 错误，调试和测试') if os.path.splitext(x)[1]=='.py'])
 
+#练习1利用os模块编写一个能实现dir -l输出的程序。
 
+#写在dir_l.py文件里
+#引用它的方法即可
+import dir_l
+dir_l.dir_l(r'E:\123\Django\python3 note')
 
+#练习2,在当前目录以及当前目录的所有子目录下查找文件名包含指定字符串的文件，并打印出相对路径。
 
-
-
-
+#本示例在windows下
+def Seachkey(d,key):
+    for x in os.listdir(d):
+        if os.path.isdir(os.path.join(d,x)):
+            Seachkey(os.path.join(d,x),key)
+        else:
+            if key in x:
+                print(x)
+Seachkey(r'E:\123\Django\python3 note','d')
 
 

@@ -7,7 +7,7 @@
 
 #managers子模块还支持把多进程分布到多台机器上
 import random,time,queue
-from multiprocessing import BaseManager
+from multiprocessing.managers import BaseManager
 
 #发送队列
 task_que=queue.Queue()
@@ -18,15 +18,21 @@ class QueueManager(BaseManager):
 	pass
 
 #注册到网络
-QueueManager.register('get_task_que',callable=lambda :task_que)
-QueueManager.register('get_result_que',callable=lambda :result_que)
+
+def cal1():
+	return task_que
+def cal2():
+	return result_que
+
+QueueManager.register('get_task_que',callable=cal1)
+QueueManager.register('get_result_que',callable=cal2)
 
 #绑定端口设置验证码,启动
 manager=QueueManager(address=('',1000),authkey=b'123')
 manager.start()
 
-task=manager.get_task_que
-result=manager.get_result_que
+task=manager.get_task_que()
+result=manager.get_result_que()
 for i in range(10):
 	n=random.randint(0,10000)
 	print(n)

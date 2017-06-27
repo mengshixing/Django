@@ -6,23 +6,23 @@
 #分布到多台机器上，而Thread最多只能分布到同一台机器的多个CPU上。
 
 #managers子模块还支持把多进程分布到多台机器上
-import random,time,queue
+import random,time,Queue
 from multiprocessing.managers import BaseManager
 
 #发送队列
-task_que=queue.Queue()
+task_que=Queue.Queue()
 #接受队列
-result_que=queue.Queue()
+result_que=Queue.Queue()
 
 class QueueManager(BaseManager):
-	pass
+    pass
 
 #注册到网络
 
 def cal1():
-	return task_que
+    return task_que
 def cal2():
-	return result_que
+    return result_que
 
 QueueManager.register('get_task_que',callable=cal1)
 QueueManager.register('get_result_que',callable=cal2)
@@ -34,14 +34,14 @@ manager.start()
 task=manager.get_task_que()
 result=manager.get_result_que()
 for i in range(10):
-	n=random.randint(0,10000)
-	print(n)
-	task.put(n)
+    n=random.randint(0,10000)
+    print(n)
+    task.put(n)#放入发送队列
 
 #获取结果
 print('Try get results...')
 for i in range(10):
-    r = result.get(timeout=30)
+    r = result.get(timeout=30)#获取结果队列
     print(r)
 # 关闭
 manager.shutdown()
@@ -51,8 +51,6 @@ print('master exit.')
 # 请注意，当我们在一台机器上写多进程程序时，创建的Queue可以直接拿来用，
 # 但是，在分布式多进程环境下，添加任务到Queue不可以直接对原始的task_queue进行操作，
 # 那样就绕过了QueueManager的封装，必须通过manager.get_task_queue()获得的Queue接口添加
-
-
 
 
 

@@ -60,12 +60,20 @@ class FIFOdict(OrderedDict):
         #相当于if key in self: containskey=1 else: containskey=0
         isexist=1 if key in self else 0
         
+		#如果key已存在,此key肯定要删除,然后重新插入此key的新key,value在队列最后
+		#如果key不存在,可以直接比对长度,删除最先入的
+		
+		#如果key存在的话，第一个if不会执行,即不执行先进先出,只是删除key.
+		
         if len(self)-isexist>=self._maxnub:
+			#popitem()本身是dict随机删除一对key,value,但是对于OrderedDict来说
+			#popitem(last=True)方法可以让我们按照LIFO(先进后出)的顺序删除dict中的key-value
+			#popitem(last=False)方法可以让我们按照FIFO(先进先出)的顺序删除dict中的key-value
             last=self.popitem(last=False)
             print('last',last)
         if isexist:
-            del self[key]:
-            print('set:',(key,value))
+            del self[key]#将key删除
+            print('set:',(key,value))#设置key到队列尾部
         else:
             print('add:',(key, value))
         OrderedDict.__setitem__(self, key, value)
@@ -84,8 +92,15 @@ print(c)
 #'a': 1, ']': 1, '[': 1, 'n': 1, 'r': 1, 'm': 1, 'w': 1})
 
 
-
-
+fifo=FIFOdict(3);
+fifo['A']=11;
+fifo['B']=22;
+fifo['A']=33;
+print(fifo)
+fifo['C']=44;
+print(fifo)
+fifo['A']=55;
+print(fifo)
 
 
 

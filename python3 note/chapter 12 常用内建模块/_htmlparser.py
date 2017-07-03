@@ -29,6 +29,8 @@ class myhtmlparser(HTMLParser):
 
     def handle_data(self, data):
         print('handle_data',data)
+        with open('a.txt','a',encoding='utf8',errors='ignore') as f:
+            f.write(data)
 
     def handle_comment(self, data):
         print('<!--', data, '-->')
@@ -74,7 +76,7 @@ parser.feed('<html>\
 # HTMLParser.handle_entityref(name)
 # 处理一般的 &name 格式的实体引用。 name 是一个一般的实体引用。
 # 可以被派生类重载；基类什么也不做。 
-	   	   
+           
 # HTMLParser.reset()
 # 重置实例 . 所有未处理的数据都会丢失。在初始化时自动调用。
  
@@ -88,3 +90,52 @@ parser.feed('<html>\
 
 # HTMLParser.getpos()
 # 返回当前行数和列数 
+
+
+#练习:输出Python官网发布的会议时间、名称和地点。
+
+class myhtmlparser1(HTMLParser):
+    def __init__(self):
+        super(myhtmlparser1,self).__init__()
+        self.flag=[False,False,False]
+        self.event=[[],[],[]]
+    def handle_starttag(self,tag,attrs):
+        def rsval(attrs,key):
+            for i in attrs:
+                if key==i[0]:
+                    return i[1]
+            return None
+        if tag=='h3' and rsval(attrs,'class')=='event-title':
+            self.flag[0]=True
+        if tag=='time':
+            self.flag[1]=True
+        if tag=='span' and rsval(attrs,'class')=='event-location':
+            self.flag[2]=True
+    def handle_data(self, data):
+        if self.flag[0]:
+            self.event[0].append(data)
+            self.flag[0]=False
+        if self.flag[1]:
+            self.event[1].append(data)
+            self.flag[1]=False
+        if self.flag[2]:
+            self.event[2].append(data)
+            self.flag[2]=False
+parser1 = myhtmlparser1()
+with open('testhtml.md','r',encoding='utf8',errors='ignore') as f:
+    line=f.readline()
+    while line:
+        #feed 传入空时会报异常
+        if line=='':
+            line=f.readline()
+            continue;
+        try:
+            parser1.feed(line)
+        except HTTPError:
+            print('Error getting page source')
+        #print(f.readline())
+        line=f.readline()
+    for i in range(len(parser1.event[0])):
+        print(parser1.event[0][i],parser1.event[1][i],parser1.event[2][i])
+        with open('a.txt','a',encoding='utf8',errors='ignore') as f:
+            f.write(parser1.event[0][i]+'\n'+parser1.event[1][i]+'\n'+parser1.event[2][i])

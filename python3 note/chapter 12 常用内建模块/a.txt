@@ -1,0 +1,17 @@
+END    Some html HTML tutorial...END    Some html HTML tutorial...END    Some html HTML tutorial...END    Some html HTML tutorial...END    Some html HTML tutorial...END    Some html HTML tutorial...END    Some html HTML tutorial...END    Some html HTML tutorial...END    Some html HTML tutorial...END    Some html HTML tutorial...END    Some html HTML tutorial...END    Some html HTML tutorial...END    Some html HTML tutorial...END    Some html HTML tutorial...END    Some html HTML tutorial...END    Some html HTML tutorial...END    Some html HTML tutorial...END    Some html HTML tutorial...END    Some html HTML tutorial...END    Some html HTML tutorial...END    Some html HTML tutorial...ENDPyData Seattle 201705 July – 08 July Microsoft Conference Center Redmond, WA. USAEuroPython 201709 July – 17 July Rimini, ItalySciPy 201710 July – 15 July Austin, TX, USAPyCon Russia 16 July – 18 July Hotel Cronwell Yahonty Tarusa, Gribovka, Kaluga Oblast, Russia, 249174PyOhio 201729 July – 31 July Columbus, Ohio, USAPyCon AU 201703 Aug. – 09 Aug. Melbourne Convention and Exhibition Centre, 1 Convention Centre Pl, South Wharf VIC 3006, AustraliaPyData Berlin 201730 June – 03 July Treskowallee 8, 10318 Berlin, GermanyPyParis 201712 June – 14 June Paris, France    Some html HTML tutorial...ENDPyData Seattle 2017
+05 July – 08 July 
+Microsoft Conference Center Redmond, WA. USAEuroPython 2017
+09 July – 17 July 
+Rimini, ItalySciPy 2017
+10 July – 15 July 
+Austin, TX, USAPyCon Russia 
+16 July – 18 July 
+Hotel Cronwell Yahonty Tarusa, Gribovka, Kaluga Oblast, Russia, 249174PyOhio 2017
+29 July – 31 July 
+Columbus, Ohio, USAPyCon AU 2017
+03 Aug. – 09 Aug. 
+Melbourne Convention and Exhibition Centre, 1 Convention Centre Pl, South Wharf VIC 3006, AustraliaPyData Berlin 2017
+30 June – 03 July 
+Treskowallee 8, 10318 Berlin, GermanyPyParis 2017
+12 June – 14 June 
+Paris, France

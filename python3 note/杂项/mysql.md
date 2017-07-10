@@ -34,3 +34,12 @@ MySQL-devel所需的库和包含文件。如果你想要编译其他MySQL客户�
 
 http://www.cnblogs.com/chusiping/archive/2011/11/10/2243805.html
 yum -y install wget 安装wget
+
+
+
+PytHon安装MySQL驱动 可能出现的问题：
+http://blog.csdn.net/hao930826/article/details/52222192
+
+Mysql 官方提供的链接列表
+https://dev.mysql.com/downloads/connector/python/
+

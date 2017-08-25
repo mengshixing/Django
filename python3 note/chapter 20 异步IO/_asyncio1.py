@@ -51,6 +51,8 @@ loop1.close()#关闭
 #输出一个线程  4个任务
 # a ---- <_MainThread(MainThread, started 90668)>
 # b ---- <_MainThread(MainThread, started 90668)>
+
+# 第二个task输出
 # a ---- <_MainThread(MainThread, started 90668)>
 # a ---- <_MainThread(MainThread, started 90668)>
 # a ---- <_MainThread(MainThread, started 90668)>

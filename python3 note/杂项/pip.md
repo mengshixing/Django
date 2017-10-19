@@ -26,3 +26,8 @@ EPEL(http://fedoraproject.org/wiki/EPEL) 是由 Fedora 社区打造，为 RHEL �
     sudo yum clean all
 
 搞定，收工！
+
+>pip 在windows环境下安装库时常会报错Failed building wheel for XXX
+原因是编译异常,可以去下载c编译过的版本http://www.lfd.uci.edu/~gohlke/pythonlibs/#jpype 下载
+之后拷贝到python包路径(例如C:\Users\ben\AppData\Local\Programs\Python\Python35\Lib\site-packages)
+之后pip install 下载文件名即可
